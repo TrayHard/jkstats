@@ -11,7 +11,7 @@ const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 const MONGO_URI = process.env.MONGO_URI ?? 'mongodb://localhost:27017/jkstats';
 
 fastify.register(cors, {
-  origin: [process.env.FRONT_URI ?? 'http://localhost:5173'],
+  origin: ['https://stats.rujka.ru', 'http://localhost:5173', 'https://stats.jkhub.org'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 });
