@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { NCard, NTabs, NTabPane, NConfigProvider, NMessageProvider, darkTheme, NIcon } from 'naive-ui'
+import { NTabs, NTabPane, NConfigProvider, NMessageProvider, darkTheme, NIcon } from 'naive-ui'
 import { ref } from 'vue';
 import PlayersOnline from './components/PlayersOnline.vue'
 import ServerlistRequests from './components/ServerlistRequests.vue'
@@ -110,9 +110,9 @@ const showLoader = ref(true);
   position: absolute;
   z-index: 10;
   left: 0;
-  top: 65px;
+  top: 60px;
   width: 100%;
-  height: calc(100% - 65px);
+  height: calc(100% - 60px);
   pointer-events: all;
   display: flex;
   align-items: center;

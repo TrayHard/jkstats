@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick, watch, inject, defineEmits } from 'vue';
-import { createChart, ColorType, LineSeries } from 'lightweight-charts';
+import { createChart, ColorType, AreaSeries } from 'lightweight-charts';
 import { setCache, getCache } from '../services/localCache';
 import { fetchServerlistRequestsData } from '../services/api';
 
@@ -125,13 +125,23 @@ async function initChart() {
       horzLines: { color: '#333' },
     },
     autoSize: true,
+    rightPriceScale: {
+      borderVisible: true,
+    },
+    kineticScroll: {
+      mouse: true,
+    },
     timeScale: {
       timeVisible: true,
       secondsVisible: false,
       barSpacing: 10,
+      borderVisible: false,
     },
   });
-  series = chart.addSeries(LineSeries, {
+  series = chart.addSeries(AreaSeries, {
+    topColor: 'rgba(76, 175, 80, 0.56)',
+    bottomColor: 'rgba(76, 175, 80, 0.04)',
+    lineColor: 'rgba(76, 175, 80, 1)',
     color: '#4CAF50',
     lineWidth: 2,
   });
