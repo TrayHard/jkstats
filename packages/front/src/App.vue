@@ -1,4 +1,5 @@
 <template>
+  <div class="topbar"></div>
   <n-config-provider :theme="darkTheme">
     <n-message-provider>
       <div class="app-container">
@@ -10,7 +11,7 @@
             JKA Stats
           </div>
           <div :class="['card-content', { blurred: showLoader }]">
-            <n-tabs v-model:value="activeTab" type="line" animated>
+            <n-tabs v-model:value="activeTab" type="line" animated :theme-overrides="naiveOverrides">
               <n-tab-pane name="requests" tab="Serverlist Requests" :keep-alive="true">
                 <div class="tab-content">
                   <ServerlistRequests :activeTab="activeTab" @loading="showLoader = $event" />
@@ -35,21 +36,65 @@
 
 <script setup lang="ts">
 import { NTabs, NTabPane, NConfigProvider, NMessageProvider, darkTheme, NIcon } from 'naive-ui'
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import PlayersOnline from './components/PlayersOnline.vue'
 import ServerlistRequests from './components/ServerlistRequests.vue'
 import ChartAreaCustomIcon from './components/ChartAreaCustomIcon.vue'
 
 const activeTab = ref('requests');
 const showLoader = ref(true);
+const naiveOverrides = reactive({
+  barColor: '#4caf50',
+  // tabTextColorLine: '#4caf50',
+  tabTextColorActiveLine: '#4caf50',
+  tabTextColorHoverLine: '#4caf50',
+  tabTextColorDisabledLine: '#4caf50',
+  tabTextColorSegment: '#4caf50',
+
+  tabTextColorActiveSegment: '#4caf50',
+  tabTextColorHoverSegment: '#4caf50',
+  tabTextColorDisabledSegment: '#4caf50',
+  
+  tabTextColorBar: '#4caf50',
+  tabTextColorActiveBar: '#4caf50',
+  tabTextColorHoverBar: '#4caf50',
+  tabTextColorDisabledBar: '#4caf50',
+  
+  tabTextColorCard: '#4caf50',
+  tabTextColorHoverCard: '#4caf50',
+  tabTextColorActiveCard: '#4caf50',
+  tabTextColorDisabledCard: '#4caf50',
+})
+
 </script>
 
 <style scoped lang="scss">
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 50px;
+  background: #1a1a1a;
+  z-index: 100;
+}
+@media (max-width: 1480px) {
+  .topbar {
+    display: none;
+  }
+}
 .app-container {
   display: flex;
   justify-content: center;
   padding: 20px;
   min-height: 100%;
+  padding-top: 20px;
+}
+@media (min-width: 1480px) {
+  .app-container {
+    min-height: calc(100% - 60px);
+    padding-top: 60px;
+  }
 }
 
 .main-card {
@@ -158,6 +203,7 @@ const showLoader = ref(true);
 @media (max-width: 600px) {
   .app-container {
     padding: 0;
+    padding-top: 0;
   }
   .main-card {
     width: 100vw;

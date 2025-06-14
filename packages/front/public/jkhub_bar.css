@@ -1,0 +1,61 @@
+/*  Essential CSS */
+.jkhub-bar{line-height:1;position:fixed;top:0;left:50%;min-width:1320px;height:50px;font-family:Oswald,Arial,Helvetica,sans-serif;font-size:16px;z-index:10000;transform: translateX(-50%);}
+.jkhub-bar,.jkhub-menu,.jkhub-submenu{background-color: var(--jkhb-bg);}
+.jkhub-bar img{border:none;}
+.jkhub-bar a:link,.jkhub-bar a:visited{text-decoration:none;text-shadow:none;}
+.jkhub-bar a:hover{text-decoration:underline;}
+#jkhub-gloss{position:absolute;height:100%;width:100%;background-color: var(--jkhb-bg);}
+#jkhub-inner{position:relative;max-width: 1350px;height:50px;margin:auto;display:flex;align-items: center;}
+#jkhub-logo{margin-right: 8px;}
+#jkhub-logo img {width:32px; height:32px; opacity:.7;filter:var(--jkhb-logo-filter);}
+#jkhub-headline{float:left;display:inline-block;line-height:1.6;text-align:center;width:520px;border-style:inset;border-width:1px;height:34px;padding-top:3px;margin:3px 2px 2px 0;font-weight:bold;border-radius:17px;}
+#jkhub-inner ul{margin:0;padding:0;list-style-type:none;}
+.jkhub-categories>li>a{height: 50px;display: inline-flex !important;align-items: center;justify-content: center;padding-top:0 !important;}
+#jkhub-inner li:first-child{margin-left:0;}
+#jkhub-inner li:hover ul{opacity:1;display:block;}
+#jkhub-inner li:hover ul ul{display:none;}
+#jkhub-inner li li:hover ul{display:block;}
+#jkhub-inner ul a{display:inline-block;width:90%;margin:0;text-decoration:none;width:100%;}
+.jkhub-categories{display:block;height:50px;text-align:right;margin-left:15px !important;}
+.jkhub-categories li{display:inline-block;height:50px;vertical-align:top;width:220px;margin-right:1px;}
+.jkhub-categories li:hover{background-color:rgba(255,255,255,0.05);}
+.jkhub-categories a:hover{text-decoration:none;background-color:rgba(0,0,0,0.1);}
+.jkhub-menu{position:relative;text-align:left;width:101%;border-radius:0 0 6px 6px;opacity:0;transition:opacity 0.3s ease-out;display:none;z-index:9999;border-style:solid;border-width:1px;border-top:none;}
+.jkhub-menu li{display:block;height:16px;padding:5px 0 20px 0px;z-index:9999;}
+.jkhub-submenu{padding:0;}
+#jkhub-inner .jkhub-menu a{border-left:none;text-shadow:none;font-weight:normal;text-align:left;padding:0;font-size:14px;width:92%;}
+.jkhub-submenu{position:relative;padding:4px 0;margin-top:1px;top:-2.8em;left:220px;border-radius:6px;border-style:solid;border-width:1px;}
+#jkhub-prev-headline{display:block;float:left;font-size:25px;text-decoration:none;margin-right:2px;}
+#jkhub-next-headline{display:block;float:left;font-size:25px;text-decoration:none;margin-left:2px;}
+#jkhub-prev-headline, #jkhub-next-headline{line-height:0;}
+#jkhub-prev-headline {margin-left:8px;}
+/*  Essential CSS end */
+
+.jkhub-bar a:link, .jkhub-bar a:visited, .jkhub-bar, .jkhub-bar a:hover{color:var(--menu-top-text-color);}
+.jkhub-categories a, #jkhub-headline, .jkhub-categories,.jkhub-menu,.jkhub-submenu{border-color:var(--bar-border);}
+.jkhub-categories a:hover{background-color:transparent;}
+.jkhub-menu li:hover{background-color: rgba(255,255,255,0.05);}
+#jkhub-next-headline, #jkhub-prev-headline{color:var(--menu-top-text-color);}
+
+@media only screen and (max-width: 1480px) {.jkhub-bar,.bar-spacer{display:none;}}
+:root {
+    --menu-margin: 0 0 20px 0;
+    --breadcrumb-top-margin: 0 0 20px 0;
+    --breadcrumb-bottom-margin: 20px 0 0 0;
+    --menu-margin-dropd: 0 0 20px 0;
+    --forums--section-title-margin: 0;
+    --forums--section-row__description--font-size: 12px;
+    --widget_vertical_item--border-radius: 0px;
+    --forums--padding: 10px;
+    --forums--margin-bottom: 20px;
+    --menu-top-margin: 0;
+    --menu-top-text-color: #888b98;
+    --bar-border: rgb(40, 40, 40);
+    --jkhb-bg: #1a1a1a;
+    --jkhb-logo-filter: invert(0) sepia(60%) saturate(342%) hue-rotate(330deg) brightness(77%) contrast(106%);
+}
+
+.bar-spacer{display:none;} /* Hide bar spacer */
+.jkhub-bar {
+    /*border-bottom:1px solid rgba(0,0,0,0.5);box-shadow:0 0 2px rgba(0,0,0,0.5);*/
+}

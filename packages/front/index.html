@@ -27,13 +27,14 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta itemprop="description"
       content="Website with stats and charts for Star Wars Jedi Knight III: Jedi Academy videogame. Players online, master server updates, etc." />
-    <!-- <link rel="stylesheet" href="/jkhub_bar.css"> -->
+    <link rel="stylesheet" href="/jkhub_bar.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;1,100&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
     <title>JKA Stats</title>
   </head>
-  <body>
+  <body onload="init_bar()">
     <div id="app"></div>
+    <script async src="https://jkhub.org/assets/bar/jkhub_bar.js"></script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html> 

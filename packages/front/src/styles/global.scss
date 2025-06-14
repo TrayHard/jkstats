@@ -15,6 +15,7 @@
   --background-color: #ffffff;
   --font-family: 'Roboto', sans-serif;
   --font-family-heading: 'Oswald', sans-serif;
+  --n-tab-text-color-active: #4caf50 !important;
 }
 
 html, body {
@@ -32,8 +33,9 @@ html, body {
   height: 100%;
 }
 
-#app {
-  height: 100%;
+#app, body, html {
+  height: calc(100% - 20px);
+  overflow: hidden;
 }
 
 // Typography
