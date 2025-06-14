@@ -28,6 +28,7 @@
 import { ref, onMounted, onUnmounted, nextTick, defineEmits } from 'vue';
 import { createChart, ColorType, LineSeries } from 'lightweight-charts';
 import { setCache, getCache } from '../services/localCache';
+import { fetchOnlineData } from '../services/api';
 
 const chartContainer = ref<HTMLElement | null>(null);
 let chart: any = null;
@@ -98,8 +99,7 @@ const fetchData = async (fromCache = false) => {
         return;
       }
     }
-    const response = await fetch(`http://localhost:3030/online?interval=${interval.value}`);
-    const data = await response.json();
+    const data = await fetchOnlineData(interval.value);
     setCache(LOCAL_STORAGE_KEY, data, CACHE_TTL);
     const trimmed = data.slice(-500);
     const chartData = trimmed.map((item: any) => ({

@@ -7,7 +7,9 @@ declare module '*.vue' {
 }
 
 interface ImportMetaEnv {
-  readonly VITE_API_URL: string;
+  readonly VITE_APP_API_URL_LOCAL: string;
+  readonly VITE_APP_API_URL_RUJKA: string;
+  readonly VITE_APP_API_URL_JKHUB: string;
   // add more env variables here if needed
 }
 

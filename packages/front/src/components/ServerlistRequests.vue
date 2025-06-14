@@ -33,6 +33,7 @@
 import { ref, onMounted, onUnmounted, nextTick, watch, inject, defineEmits } from 'vue';
 import { createChart, ColorType, LineSeries } from 'lightweight-charts';
 import { setCache, getCache } from '../services/localCache';
+import { fetchServerlistRequestsData } from '../services/api';
 
 interface ServerlistRequestPoint {
   t: string;
@@ -84,8 +85,7 @@ const fetchData = async (fromCache = false) => {
         return;
       }
     }
-    const response = await fetch(`http://localhost:3030/svlist?interval=${interval.value}`);
-    const data: ServerlistRequestPoint[] = await response.json();
+    const data: ServerlistRequestPoint[] = await fetchServerlistRequestsData(interval.value);
     setCache(LOCAL_STORAGE_KEY, data, CACHE_TTL);
     const trimmed = data.slice(-500);
     const chartData = trimmed.map((item) => ({
