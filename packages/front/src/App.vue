@@ -54,12 +54,12 @@ const naiveOverrides = reactive({
   tabTextColorActiveSegment: '#4caf50',
   tabTextColorHoverSegment: '#4caf50',
   tabTextColorDisabledSegment: '#4caf50',
-  
+
   tabTextColorBar: '#4caf50',
   tabTextColorActiveBar: '#4caf50',
   tabTextColorHoverBar: '#4caf50',
   tabTextColorDisabledBar: '#4caf50',
-  
+
   tabTextColorCard: '#4caf50',
   tabTextColorHoverCard: '#4caf50',
   tabTextColorActiveCard: '#4caf50',
@@ -99,9 +99,8 @@ const naiveOverrides = reactive({
 
 .main-card {
   width: 1050px;
-  min-height: 95vh;
-  max-height: 95vh;
-  height: auto;
+  min-height: calc(95vh - 40px);
+  max-height: calc(95vh - 40px);
   background-color: #212121;
   padding: 0;
   overflow: hidden;
