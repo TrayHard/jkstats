@@ -1,0 +1,4 @@
+packages:
+  - 'packages/front'
+  - 'packages/back'
+  - 'packages/core' 

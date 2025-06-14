@@ -1,0 +1,21 @@
+{
+  "name": "@jkstats/front",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lightweight-charts": "^5.0.7",
+    "naive-ui": "^2.41.1",
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "sass": "^1.89.2",
+    "typescript": "^5.8.3",
+    "vite": "^5.0.0"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "JKStats",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "packages/front",
+    "packages/back",
+    "packages/core"
+  ],
+  "scripts": {
+    "dev:front": "pnpm --filter @jkstats/front dev",
+    "dev:back": "pnpm --filter @jkstats/back dev",
+    "dev": "pnpm run dev:front & pnpm run dev:back"
+  }
+} 

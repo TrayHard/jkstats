@@ -1,0 +1,74 @@
+@use "sass:color";
+
+// Reset
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// Variables
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #42b983;
+  --text-color: #2c3e50;
+  --background-color: #ffffff;
+  --font-family: 'Roboto', sans-serif;
+  --font-family-heading: 'Oswald', sans-serif;
+}
+
+html, body {
+  background: url('../public/img/space.jpg') left top fixed repeat, url('../public/img/space.jpg') right top fixed repeat, var(--background-color);
+  background-size: auto 100%;
+  color: var(--text-color);
+  transition: color 0.5s, background-color 0.5s;
+  line-height: 1.3;
+  font-family: Roboto, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu,
+  Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+}
+
+#app {
+  height: 100%;
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-heading);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+// Links
+a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: color.adjust(#42b983, $lightness: -10%);
+  }
+}
+
+// Utility classes
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+} 
