@@ -99,8 +99,8 @@ const naiveOverrides = reactive({
 
 .main-card {
   width: 1050px;
-  min-height: calc(95vh - 90px);
-  max-height: calc(95vh - 90px);
+  min-height: calc(95vh - 40px);
+  max-height: calc(95vh - 40px);
   background-color: #212121;
   padding: 0;
   overflow: hidden;
