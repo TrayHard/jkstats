@@ -18,7 +18,7 @@
 }
 
 html, body {
-  background: url('../public/img/space.jpg') left top fixed repeat, url('../public/img/space.jpg') right top fixed repeat, var(--background-color);
+  background: url('../img/space.jpg') left top fixed repeat, url('../img/space.jpg') right top fixed repeat, var(--background-color);
   background-size: auto 100%;
   color: var(--text-color);
   transition: color 0.5s, background-color 0.5s;
