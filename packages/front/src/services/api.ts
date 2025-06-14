@@ -3,11 +3,8 @@ switch (true) {
   case window.location.host.includes('localhost'):
     baseURL = import.meta.env.VITE_APP_API_URL_LOCAL;
     break;
-  case window.location.host === 'stats.rujka.ru':
+  case window.location.host === 'stats.rujka.ru' || window.location.host === 'stats.jkhub.org':
     baseURL = import.meta.env.VITE_APP_API_URL_RUJKA;
-    break;
-  case window.location.host === 'stats.jkhub.org':
-    baseURL = import.meta.env.VITE_APP_API_URL_JKHUB;
     break;
   default:
     throw new Error('Unknown host for API');
