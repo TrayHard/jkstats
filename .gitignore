@@ -25,6 +25,7 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
+*.sh
 
 # Build
 /dist/
