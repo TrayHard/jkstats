@@ -79,7 +79,7 @@ const showLoader = ref(true);
   font-size: 2rem;
   font-family: var(--font-family-heading, 'Oswald', sans-serif);
   font-weight: 600;
-  padding: 18px 0 8px 0;
+  padding: 8px 0;
   margin-bottom: 8px;
   border-bottom: 1px solid #333;
   letter-spacing: 1px;
