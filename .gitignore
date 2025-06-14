@@ -29,6 +29,7 @@ Thumbs.db
 # Build
 /dist/
 /build/
+packages/back/dist/
 
 # Coverage
 coverage/
