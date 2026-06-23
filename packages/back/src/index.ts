@@ -16,6 +16,17 @@ fastify.register(cors, {
   credentials: true
 });
 
+// Let Cloudflare/browser cache GET responses (data changes every 3-5 min). NOT for future authed routes.
+fastify.addHook('onSend', async (request, reply, payload) => {
+  if (request.method === 'GET' && request.url !== '/health' && reply.statusCode < 400) {
+    reply.header(
+      'Cache-Control',
+      'public, max-age=30, s-maxage=300, stale-while-revalidate=600, stale-if-error=86400'
+    );
+  }
+  return payload;
+});
+
 fastify.get('/health', async () => {
   return { status: 'ok' };
 });

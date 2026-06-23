@@ -11,4 +11,6 @@ const svlistRequestsSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
+svlistRequestsSchema.index({ updated: 1 });
+
 export const SvlistRequests = mongoose.model('svlist_requests', svlistRequestsSchema);
