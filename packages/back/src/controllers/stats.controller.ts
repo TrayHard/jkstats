@@ -1,4 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
+import mongoose from 'mongoose';
 import { PlayersOnline } from '../models/PlayersOnline';
 import { SvlistRequests } from '../models/SvlistRequests';
 
@@ -31,6 +32,9 @@ const LOOKBACK_MS: Record<TimeInterval, number> = {
 const DEFAULT_LIMIT = 500;
 const MAX_LIMIT = 2000;
 
+// Long ranges are served from the pre-aggregated `players_online_hourly` rollup (kept fresh by cron).
+const ROLLUP_INTERVALS = new Set<TimeInterval>(['1d', '1w', '1M']);
+
 const resolveInterval = (x?: string): TimeInterval =>
   (x && x in INTERVAL_MS ? (x as TimeInterval) : '1h');
 
@@ -56,6 +60,38 @@ export const getPlayersOnlineStats = async (
   const intervalMs = INTERVAL_MS[interval];
   const since = resolveSince(interval, req.query.from ? Number(req.query.from) : undefined);
   const limit = resolveLimit(req.query.limit ? Number(req.query.limit) : undefined);
+
+  // Serve long ranges from the hourly rollup, re-bucketed to the requested interval.
+  // Exact average: sum over samples / total samples per bucket.
+  if (ROLLUP_INTERVALS.has(interval)) {
+    const rollup = (mongoose.connection.db as any).collection('players_online_hourly');
+    const rolled = await rollup
+      .aggregate(
+        [
+          { $match: { _id: { $gte: since } } },
+          {
+            $group: {
+              _id: { $multiply: [{ $floor: { $divide: ['$_id', intervalMs] } }, intervalMs] },
+              sum: { $sum: '$sum' },
+              samples: { $sum: '$samples' },
+            },
+          },
+          { $sort: { _id: -1 } },
+          { $limit: limit },
+          {
+            $project: {
+              _id: 0,
+              timestamp: { $toDate: '$_id' },
+              totalPlayers: { $cond: [{ $gt: ['$samples', 0] }, { $divide: ['$sum', '$samples'] }, 0] },
+            },
+          },
+        ],
+        { allowDiskUse: true }
+      )
+      .toArray();
+    rolled.reverse();
+    return rolled;
+  }
 
   const rows = await PlayersOnline.aggregate([
     { $match: { updated: { $gte: since } } },
