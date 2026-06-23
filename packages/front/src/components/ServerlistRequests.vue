@@ -30,8 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick, watch, inject, defineEmits } from 'vue';
-import { createChart, ColorType, AreaSeries } from 'lightweight-charts';
+import { ref, onMounted, onUnmounted, nextTick, watch, defineEmits } from 'vue';
 import { setCache, getCache } from '../services/localCache';
 import { fetchServerlistRequestsData } from '../services/api';
 
@@ -51,92 +50,66 @@ const chartContainer = ref<HTMLElement | null>(null);
 let chart: any = null;
 let series: any = null;
 let pendingChartData: { time: number; value: number }[] | null = null;
-let hasData = false;
-let resizeObserver: ResizeObserver | null = null;
-
-const chartInitialized = ref(false);
 
 const emit = defineEmits(['loading']);
+
+const toChart = (rows: ServerlistRequestPoint[]) =>
+  (Array.isArray(rows) ? rows : [])
+    .map((item) => ({
+      time: Math.floor(new Date(item.t).getTime() / 1000),
+      value: Number(item.count),
+    }))
+    .sort((a, b) => a.time - b.time);
 
 const drawChartData = (chartData: { time: number; value: number }[]) => {
   if (series) {
     series.setData(chartData);
-    hasData = true;
     chart.timeScale().fitContent();
   } else {
     pendingChartData = chartData;
   }
 };
 
-const fetchData = async (fromCache = false) => {
+// Returns true if a fresh cache hit was drawn (no network needed).
+const fetchData = async (fromCache = false): Promise<boolean> => {
   emit('loading', true);
   try {
-    const LOCAL_STORAGE_KEY = getLocalStorageKey(interval.value);
+    const KEY = getLocalStorageKey(interval.value);
     if (fromCache) {
-      const cached = getCache<ServerlistRequestPoint[]>(LOCAL_STORAGE_KEY);
+      const cached = getCache<ServerlistRequestPoint[]>(KEY);
       if (cached) {
-        const trimmed = cached.slice(-500);
-        const chartData = trimmed.map((item) => ({
-          time: Math.floor(new Date(item.t).getTime() / 1000),
-          value: Number(item.count),
-        })).sort((a, b) => a.time - b.time);
-        drawChartData(chartData);
-        emit('loading', false);
-        return;
+        drawChartData(toChart(cached));
+        return true;
       }
+      return false;
     }
     const data: ServerlistRequestPoint[] = await fetchServerlistRequestsData(interval.value);
-    setCache(LOCAL_STORAGE_KEY, data, CACHE_TTL);
-    const trimmed = data.slice(-500);
-    const chartData = trimmed.map((item) => ({
-      time: Math.floor(new Date(item.t).getTime() / 1000),
-      value: Number(item.count),
-    })).sort((a, b) => a.time - b.time);
-    drawChartData(chartData);
+    const trimmed = (Array.isArray(data) ? data : []).slice(-500);
+    setCache(KEY, trimmed, CACHE_TTL); // cache only the trimmed points, not the raw payload
+    drawChartData(toChart(trimmed));
+    return true;
   } catch (error) {
+    return false;
   } finally {
     emit('loading', false);
   }
 };
 
-watch(
-  () => props.activeTab,
-  (val) => {
-    if (val === 'requests') {
-      fetchData(true);
-      fetchData();
-      nextTick(() => {
-        chart?.timeScale().fitContent();
-      });
-    }
-  },
-  { immediate: true }
-);
+const refresh = async () => {
+  const served = await fetchData(true);
+  if (!served) await fetchData(false);
+};
 
 async function initChart() {
-  if (chartInitialized.value || !chartContainer.value) return;
+  if (chart || !chartContainer.value) return;
+  const { createChart, ColorType, AreaSeries } = await import('lightweight-charts');
   chart = await createChart(chartContainer.value, {
-    layout: {
-      background: { type: ColorType.Solid, color: '#181818' },
-      textColor: '#888',
-    },
-    grid: {
-      vertLines: { color: '#333' },
-      horzLines: { color: '#333' },
-    },
+    layout: { background: { type: ColorType.Solid, color: '#181818' }, textColor: '#888' },
+    grid: { vertLines: { color: '#333' }, horzLines: { color: '#333' } },
     autoSize: true,
-    rightPriceScale: {
-      borderVisible: true,
-    },
-    kineticScroll: {
-      mouse: true,
-    },
-    timeScale: {
-      timeVisible: true,
-      secondsVisible: false,
-      barSpacing: 10,
-      borderVisible: false,
-    },
+    rightPriceScale: { borderVisible: true },
+    kineticScroll: { mouse: true },
+    timeScale: { timeVisible: true, secondsVisible: false, barSpacing: 10, borderVisible: false },
   });
   series = chart.addSeries(AreaSeries, {
     topColor: 'rgba(76, 175, 80, 0.56)',
@@ -148,38 +121,40 @@ async function initChart() {
   if (pendingChartData) {
     series.setData(pendingChartData);
     pendingChartData = null;
-    hasData = true;
   }
   chart.timeScale().fitContent();
-  chartInitialized.value = true;
 }
+
+// Re-fetch when the user returns to this tab (conditional: cache-first).
+watch(
+  () => props.activeTab,
+  (val) => {
+    if (val === 'requests') {
+      refresh();
+      nextTick(() => chart?.timeScale().fitContent());
+    }
+  }
+);
 
 function onIntervalChange(newInterval: string) {
   if (interval.value !== newInterval) {
     interval.value = newInterval;
-    fetchData(true);
-    fetchData();
+    refresh();
   }
 }
 
 onMounted(() => {
-  nextTick(() => {
-    initChart();
-    fetchData(true);
-    fetchData();
+  nextTick(async () => {
+    await initChart();
+    await refresh();
   });
 });
 
 onUnmounted(() => {
-  if (resizeObserver && chartContainer.value) {
-    resizeObserver.unobserve(chartContainer.value);
-    resizeObserver = null;
-  }
   if (chart) {
     chart.remove();
     chart = null;
     series = null;
-    chartInitialized.value = false;
   }
 });
 </script>
